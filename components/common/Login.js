@@ -11,18 +11,19 @@ export default class Login extends Component {
             username:'',
             pwd:'',
             isloading:false,
-            num:0
+            unum:0,
+            pnum:0
         }
     }
     userhandle = (text)=>{
       if(text!==''){
-        this.setState({username:text,num:0})
+        this.setState({username:text,unum:0})
       }
         
     }
     pwdhandle = (text)=>{
       if(text!==''){ 
-        this.setState({pwd:text,num:0})
+        this.setState({pwd:text,pnum:0})
       }
     }
     login = ()=>{
@@ -42,11 +43,15 @@ export default class Login extends Component {
                   })
           })
         }
-        else{
+        else if(this.state.unum == ''){
           this.setState({
-            num:1
+            unum:1
           })
-          console.log('请输入用户名');
+        }
+        else if(this.state.pnum == ''){
+          this.setState({
+            pnum:1
+          })
         }
         
     } 
@@ -115,11 +120,15 @@ export default class Login extends Component {
                 <Text>去注册</Text>
             </TouchableOpacity>
             {
-              this.state.num == 0 
-              ? <View style={{marginTop:30}}><Text></Text></View>
-              : <View style={{height:40,backgroundColor:'#ccc',justifyContent:'center',padding:10,borderRadius:15,marginTop:30}}><Text>请输入用户名或密码！</Text></View>
+              this.state.unum == 0 
+              ? <View style={{position:'absolute',top:290}}><Text></Text></View>
+              : <View style={{height:40,backgroundColor:'#ccc',justifyContent:'center',padding:10,borderRadius:15,position:'absolute',top:290}}><Text>请输入用户名！</Text></View>
             }
-            
+            {
+              this.state.pnum == 0 
+              ? <View style={{position:'absolute',top:290}}><Text></Text></View>
+              : <View style={{height:40,backgroundColor:'#ccc',justifyContent:'center',padding:10,borderRadius:15,position:'absolute',top:290}}><Text>请输入正确的密码！</Text></View>
+            }
         </View>
         {
             this.state.isloading

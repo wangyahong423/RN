@@ -10,7 +10,7 @@ export default class SwiperPage extends Component {
   };
   render() {
     return (
-      <Swiper style={styles.wrapper} showsButtons={true}>
+      <Swiper style={styles.wrapper} autoplay={true} showsButtons={true}>
         <View style={styles.slide1}>
           <Image
             style={styles.img}

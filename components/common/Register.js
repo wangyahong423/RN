@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Icon } from '@ant-design/react-native';
-import {View, Text, Image, TextInput, AsyncStorage, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TextInput, AsyncStorage, TouchableOpacity, Alert} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {myFetch} from '../utils';
 
@@ -10,8 +10,9 @@ export default class Register extends Component {
         this.state = {
             username:'',
             pwd:'',
+            repwd:'',
             isregistering:false,
-            num:0
+            num:0,
         }
     }
     userhandle = (text)=>{
@@ -24,26 +25,42 @@ export default class Register extends Component {
         if(text!==''){
           this.setState({pwd:text,num:0})
         }
+    }
+    repwdhandle = (text)=>{
+        if(text!==''){
+          this.setState({repwd:text,ise:0})
+        }
       }
     register = ()=>{
-        
-        if(this.state.username != '' && this.state.pwd != ""){
-            this.setState({
-                isregistering:true
-            })
-            myFetch.post('/register',{
-                username:this.state.username,
-                pwd:this.state.pwd}
-            ).then(res=>{
-                // 注册成功
-                Actions.login();
-            })
+        if(this.state.username != '' && this.state.pwd != "" && this.state.repwd != ""){
+            if( this.state.pwd == this.state.repwd){
+                this.setState({
+                    isregistering:true,
+                    ise:0
+                })
+                myFetch.post('/register',{
+                    username:this.state.username,
+                    pwd:this.state.pwd}
+                ).then(res=>{
+                    // 注册成功
+                    Actions.login();
+                })
+            }
+            else{
+                Alert.alert('密码不一致')
+            }
+            
         }
         else{
-            this.setState({
-              num:1
-            })
-            console.log('请输入用户名');
+            if(this.state.username ==''){
+                Alert.alert('请输入用户名！');
+            }
+            else if(this.state.pwd == ''){
+                Alert.alert('请输入密码！');
+            }
+            else if(this.state.repwd == ''){
+                Alert.alert('请再次确认密码！');
+            }
         }
         
     }
@@ -66,7 +83,7 @@ export default class Register extends Component {
                         paddingLeft: 20,
                         }}>
                         <Icon name="user" color="red"/>
-                        <TextInput placeholder="用户名" 
+                        <TextInput placeholder="请输入用户名" 
                             onChangeText={this.userhandle}
                         />
                     </View>
@@ -83,7 +100,24 @@ export default class Register extends Component {
                         <Icon name="lock" color="red"/>
                         <TextInput 
                             onChangeText={this.pwdhandle}
-                            placeholder="密码" 
+                            placeholder="请输入密码" 
+                            secureTextEntry={true}
+                        />
+                    </View>
+                    <View
+                        style={{
+                        width: '80%',
+                        marginRight: 10,
+                        borderBottomColor: '#ccc',
+                        borderBottomWidth: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingLeft: 20,
+                        }}>
+                        <Icon name="lock" color="red"/>
+                        <TextInput 
+                            onChangeText={this.repwdhandle}
+                            placeholder="请确认密码" 
                             secureTextEntry={true}
                         />
                     </View>
@@ -115,11 +149,6 @@ export default class Register extends Component {
                             <Text>返回登录</Text>
                         </TouchableOpacity>
                     </View>
-                    {
-                        this.state.num == 0 
-                        ? <View style={{marginTop:30}}><Text></Text></View>
-                        : <View style={{height:40,backgroundColor:'#ccc',justifyContent:'center',padding:10,borderRadius:15,marginTop:30}}><Text>请输入用户名或密码！</Text></View>
-                    }
                 </View>
                 {
                     this.state.isregistering

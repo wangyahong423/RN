@@ -179,7 +179,7 @@ export default class Person extends Component {
                                 </View>
                             </View>
                         </View>
-                    <TouchableOpacity onPress={this.outlogin}><Text style={{color:'#767676',marginTop:10,textAlign:'center',marginBottom:10}}>退出登录</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this.outlogin} style={{height:30,marginBottom:10,marginTop:10,marginLeft:'40%',width:80,backgroundColor:'red',borderRadius:15,justifyContent:'center'}}><Text style={{textAlign:'center',color:'white'}}>退出登录</Text></TouchableOpacity>
                 </View>
             </ScrollView>
         )
